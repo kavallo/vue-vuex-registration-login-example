@@ -28,15 +28,20 @@
                 <router-link to="/login" class="btn btn-link">Cancel</router-link>
             </div>
         </form>
+
+         {{ info }}
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex';
+import axios from 'axios';
+import config from 'config';
 
 export default {
     data () {
         return {
+            info:null,
             user: {
                 firstName: '',
                 lastName: '',
@@ -46,6 +51,11 @@ export default {
             submitted: false
         }
     },
+    mounted () {
+    axios
+      .get(`${config.apiUrl}/users`)
+      .then(response => (this.info = response))
+  },
     computed: {
         ...mapState('account', ['status'])
     },
